@@ -76,57 +76,57 @@ public class PartialInstanceParserTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void testParse() throws PIParseException {
-        PartialInstanceParser pip = new PartialInstanceParser(partialInstance);
-        PartialInstance pi = pip.parse();
-        assertNotNull(pi);
-        assertEquals(11, pi.getUniverse().size());
-        int[] ints = pi.ints();
-        Arrays.sort(ints);
-        assertArrayEquals(new int[] {0,1,2,3,4,5,6,7,8,9}, ints);
-        {
-            List<Atom> tsl = pi.sigLower("Sudoku");
-            assertEquals(1, tsl.size());
+//    @Test
+//    public void testParse() throws PIParseException {
+//        PartialInstanceParser pip = new PartialInstanceParser(partialInstance);
+//        PartialInstance pi = pip.parse();
+//        assertNotNull(pi);
+//        assertEquals(11, pi.getUniverse().size());
+//        int[] ints = pi.ints();
+//        Arrays.sort(ints);
+//        assertArrayEquals(new int[] {0,1,2,3,4,5,6,7,8,9}, ints);
+//        {
+//            List<Atom> tsl = pi.sigLower("Sudoku");
+//            assertEquals(1, tsl.size());
+//
+//            List<Atom> tsu = pi.sigUpper("Sudoku");
+//            assertEquals(1, tsu.size());
+//            assertTrue(tsu.get(0) == tsl.get(0));
+//        }
+//        {
+//            List<List<Atom>> tsl = pi.fldLower("Sudoku", "grid");
+//            assertEquals(26, tsl.size());
+//            assertEquals(4, tsl.get(0).size());
+//
+//            List<List<Atom>> tsu = pi.fldUpper("Sudoku", "grid");
+//            assertEquals(521, tsu.size());
+//            assertEquals(4, tsu.get(0).size());
+//            assertTrue(tsu.get(0).get(0) == tsl.get(0).get(0));
+//        }
+//    }
 
-            List<Atom> tsu = pi.sigUpper("Sudoku");
-            assertEquals(1, tsu.size());
-            assertTrue(tsu.get(0) == tsl.get(0));
-        }
-        {
-            List<List<Atom>> tsl = pi.fldLower("Sudoku", "grid");
-            assertEquals(26, tsl.size());
-            assertEquals(4, tsl.get(0).size());
-
-            List<List<Atom>> tsu = pi.fldUpper("Sudoku", "grid");
-            assertEquals(521, tsu.size());
-            assertEquals(4, tsu.get(0).size());
-            assertTrue(tsu.get(0).get(0) == tsl.get(0).get(0));
-        }
-    }
-
-    @Test
-    public void testSolve() throws PIParseException, Err {
-        A4Reporter rep = new A4Reporter();
-        Module world = CompUtil.parseEverything_fromString(rep, model);
-        A4Options opt = new A4Options();
-        opt.partialInstance = partialInstance;
-        opt.solver = A4Options.SatSolver.SAT4J;
-        Command cmd = world.getAllCommands().get(0);
-        A4Solution sol = TranslateAlloyToKodkod.execute_commandFromBook(rep, world.getAllReachableSigs(), cmd, opt);
-        assertTrue(sol.satisfiable());
-
-        Sig sudokuSig = world.getAllSigs().get(0);
-        Field gridFld = sudokuSig.getFields().get(0);
-        assertEquals(26, sol.getBounds().lowerBound((Relation) sol.a2k(gridFld)).size());
-        assertEquals(521, sol.getBounds().upperBound((Relation) sol.a2k(gridFld)).size());
-
-        assertEquals(1, sol.getBounds().lowerBound((Relation) sol.a2k(sudokuSig)).size());
-        assertEquals(1, sol.getBounds().upperBound((Relation) sol.a2k(sudokuSig)).size());
-
-        System.out.println(sol.getBounds());
-        System.out.println();
-        System.out.println(sol);
-    }
+//    @Test
+//    public void testSolve() throws PIParseException, Err {
+//        A4Reporter rep = new A4Reporter();
+//        Module world = CompUtil.parseEverything_fromString(rep, model);
+//        A4Options opt = new A4Options();
+//        opt.partialInstance = partialInstance;
+//        opt.solver = A4Options.SatSolver.SAT4J;
+//        Command cmd = world.getAllCommands().get(0);
+//        A4Solution sol = TranslateAlloyToKodkod.execute_commandFromBook(rep, world.getAllReachableSigs(), cmd, opt);
+//        assertTrue(sol.satisfiable());
+//
+//        Sig sudokuSig = world.getAllSigs().get(0);
+//        Field gridFld = sudokuSig.getFields().get(0);
+//        assertEquals(26, sol.getBounds().lowerBound((Relation) sol.a2k(gridFld)).size());
+//        assertEquals(521, sol.getBounds().upperBound((Relation) sol.a2k(gridFld)).size());
+//
+//        assertEquals(1, sol.getBounds().lowerBound((Relation) sol.a2k(sudokuSig)).size());
+//        assertEquals(1, sol.getBounds().upperBound((Relation) sol.a2k(sudokuSig)).size());
+//
+//        System.out.println(sol.getBounds());
+//        System.out.println();
+//        System.out.println(sol);
+//    }
 
 }
